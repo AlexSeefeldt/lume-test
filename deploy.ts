@@ -9,20 +9,21 @@ if (!Deno.env.has(deploy_repo_key)) {
 
 // init an empty git repository there, add and commit everything,
 // and force-push it to our github repository
-const git_commands = `
-init -b main
-add .
-commit -m deploy
-remote add origin git@github.com:${Deno.env.get(deploy_repo_key)}.git
-push -fu origin main
-`.split("\n").slice(1, -1);
+const git_commands = [
+  ["init", "-b", "main"],
+  ["config", "user.name", "autodeploy"],
+  ["config", "core.sshCommand", "ssh -o StrictHostKeyChecking=accept-new"],
+  ["add", "."],
+  ["commit", "-m", "deploy"],
+  ["remote", "add", "origin", `git@github.com:${Deno.env.get(deploy_repo_key)}.git`],
+  ["push", "-fu", "origin", "main"],
+]
 
-for (const line of git_commands) {
-  const args = line.split(" ");
-  console.log("%c> %cgit "+line, "color: green", "font-weight: bold")
+for (const args of git_commands) {
+  console.log("%c> %cgit "+args.join(" "), "color: green", "font-weight: bold")
   const process = new Deno.Command("git", { args, stdout: "piped", stderr: "piped" }).spawn();
-  process.stdout.pipeTo(Deno.stdout.writable, { preventClose: true, preventCancel: true, preventAbort: true });
-  process.stderr.pipeTo(Deno.stderr.writable, { preventClose: true, preventCancel: true, preventAbort: true });
+  // process.stdout.pipeTo(Deno.stdout.writable, { preventClose: true, preventCancel: true, preventAbort: true });
+  // process.stderr.pipeTo(Deno.stderr.writable, { preventClose: true, preventCancel: true, preventAbort: true });
   const { success } = await process.status;
   if (!success) {
     throw new Error("Fatal: git command failed");
