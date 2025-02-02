@@ -11,7 +11,7 @@ site.use(slugifyUrls({ replace: { "'":"", "’":"" } }));
 site.addEventListener("beforeRender", (event) => {
   event.pages.forEach(page => {
     if (page.data.bleat) {
-      page.data.url = `/microblog/${page.data.date.getTime()}.html`;
+      page.data.url = `/microblog/${Math.floor(page.data.date.getTime() / 1000)}.html`;
       page.data.title = `Bleat at ${page.data.date.toLocaleDateString("en-US", { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit', hourCycle: 'h12'})}`
     } else if (page.data.post && !page.data.title) {
       page.data.title = page.sourcePath.replace(/^\/posts\//, "").replace(/\.md$/, "");
@@ -22,7 +22,11 @@ site.addEventListener("beforeRender", (event) => {
 site.process([".html"], pages => {
   pages.forEach(page => {
     if (page.content) {
-      page.content = page.content.toString().replaceAll(/\[\[([^\]\|]*)(\|([^\]]*))?\]\]/g, (match, name, _, display_name) => {
+      page.content = page.content.toString()
+      .replaceAll(/!\[\[([^\]\|]*)(\|([^\]]*))?\]\]/g, (_match, filename, _, alt) => {
+        return `<img src="/img/${filename}"${alt ? `alt="${alt}"` : ""}>`;
+      })
+      .replaceAll(/\[\[([^\]\|]*)(\|([^\]]*))?\]\]/g, (match, name, _, display_name) => {
         const link_page = pages.find(page => page.sourcePath === `/posts/${name}.md`);
         return link_page ? `<a href="${link_page.data.url}">${display_name ?? name}</a>` : match;
       });
@@ -44,6 +48,8 @@ site.use(relativeUrls());
 //     }
 //   }
 // });
+
+site.copy([".jpg", ".jpeg", ".gif", ".png", ".webp"], file => file.replace(/^.+\//,"/img/"));
 
 site.copyRemainingFiles();
 

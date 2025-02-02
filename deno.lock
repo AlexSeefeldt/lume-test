@@ -956,6 +956,7 @@
   },
   "workspace": {
     "dependencies": [
+      "jsr:@std/fmt@1.0.4",
       "npm:preact@*"
     ]
   }
