@@ -1,5 +1,5 @@
 {
   "folder": "",
-  "template": "_bleat",
+  "template": "_templates/bleat",
   "format": "YY-MM-DD_HH-mm-ss"
 }

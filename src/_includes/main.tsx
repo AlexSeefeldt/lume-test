@@ -1,4 +1,4 @@
-export default ({ title, head, children, tags, date }: PageData<{ head: JSX }>, _helpers: Lume.Helpers) => (
+export default ({ title, head, children, date, post, bleat }: PageData<{ head: JSX; post: boolean; bleat: boolean; }>, _helpers: Lume.Helpers) => (
   <html lang="en">
     <head>
       {title && <title>{title}</title>}
@@ -10,10 +10,10 @@ export default ({ title, head, children, tags, date }: PageData<{ head: JSX }>, 
       {head}
     </head>
     <body>
-      {tags.includes("post") && !tags.includes("bleat") && <h2>{title}</h2>}
-      {tags.includes("post") && date.toLocaleDateString("ja-JP", tags.includes("bleat") ? { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit', hourCycle: 'h12'} : { day: 'numeric', month: 'short', year: 'numeric' })}
+      {post && !bleat && <h2>{title}</h2>}
+      {post && date.toLocaleDateString("en-US", bleat ? { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit', hourCycle: 'h12'} : { day: 'numeric', month: 'short', year: 'numeric' })}
       {children}
-      {tags.includes("post") && <a href="/">← Home</a>}
+      {post && <a href="/">← Home</a>}
     </body>
   </html>
 );

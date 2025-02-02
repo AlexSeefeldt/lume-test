@@ -10,10 +10,10 @@ site.use(slugifyUrls({ replace: { "'":"", "’":"" } }));
 
 site.addEventListener("beforeRender", (event) => {
   event.pages.forEach(page => {
-    if (page.data.tags.includes("bleat")) {
+    if (page.data.bleat) {
       page.data.url = `/microblog/${page.data.date.getTime()}.html`;
       page.data.title = `Bleat at ${page.data.date.toLocaleDateString("en-US", { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit', hourCycle: 'h12'})}`
-    } else if (page.data.tags.includes("post") && !page.data.title) {
+    } else if (page.data.post && !page.data.title) {
       page.data.title = page.sourcePath.replace(/^\/posts\//, "").replace(/\.md$/, "");
     }
   });
