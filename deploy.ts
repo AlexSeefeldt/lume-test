@@ -16,6 +16,7 @@ Deno.createSync(".nojekyll");
 const git_commands = [
   ["init", "-b", "main"],
   ["config", "user.name", "autodeploy"],
+  ["config", "user.email", ""],
   ["config", "core.sshCommand", "ssh -o StrictHostKeyChecking=accept-new"],
   ["add", "."],
   ["commit", "-m", "deploy"],

@@ -3,7 +3,7 @@ export default ({ title, head, children, date, post, bleat }: PageData<{ head: J
     <head>
       {title && <title>{title}</title>}
       <meta charset="utf-8"/>
-      <meta name="theme-color" content="#f93366"/>
+      <meta name="theme-color" content="#fff8c9"/>
       <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"/>
       <link rel="icon" type="image/x-icon" href="./favicon.ico"/>
       <link rel="stylesheet" type="text/css" href="/css/style.css"/>
