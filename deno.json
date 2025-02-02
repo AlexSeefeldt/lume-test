@@ -1,0 +1,22 @@
+{
+  "imports": {
+    "lume/": "https://deno.land/x/lume@v2.5.0/"
+  },
+  "tasks": {
+    "lume": "echo \"import 'lume/cli.ts'\" | deno run --allow-read=. --allow-write=. --allow-net=0.0.0.0:3000 -",
+    "build": "deno task lume",
+    "serve": "deno task lume -s",
+    "deploy": "deno task lume && deno run --allow-read=_site --allow-run=git --env-file=.env --allow-env=DEPLOY_REPO deploy.ts"
+  },
+  "compilerOptions": {
+    "types": [
+      "lume/types.ts",
+      "types.d.ts"
+    ],
+    "jsx": "react-jsx",
+    "jsxImportSource": "npm:preact"
+  },
+  "lint": {
+    "tags": ["recommended"]
+  }
+}

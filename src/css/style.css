@@ -1,0 +1,10 @@
+html {
+  background-color: lightgoldenrodyellow;
+}
+h1,h2,h3 {
+  margin: 0.5em auto;
+}
+.post {
+  border-top: 1px solid black;
+  padding-top: 1em;
+}
