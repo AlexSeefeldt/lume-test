@@ -14,14 +14,14 @@ Deno.createSync(".nojekyll");
 // init an empty git repository there, add and commit everything,
 // and force-push it to our github repository
 const git_commands = [
-  ["init", "-b", "main"],
-  ["config", "user.name", "autodeploy"],
+  ["init", "-b", "deploy"],
+  ["config", "user.name", "deploy script"],
   ["config", "user.email", ""],
   ["config", "core.sshCommand", "ssh -o StrictHostKeyChecking=accept-new"],
   ["add", "."],
   ["commit", "-m", "deploy"],
   ["remote", "add", "origin", `git@github.com:${Deno.env.get(deploy_repo_key)}.git`],
-  ["push", "-fu", "origin", "main"],
+  ["push", "-fu", "origin", "deploy"],
 ]
 
 for (const args of git_commands) {

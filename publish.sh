@@ -5,7 +5,7 @@ set -eux
 date
 
 repository=${1:?}
-site_directory="${repository/#*"/"/}-main"
+site_directory="${repository/#*"/"/}"
 
 # remove old code & data
 rm -rf upload $site_directory
@@ -18,14 +18,18 @@ unzip upload.zip -d upload
 rm upload.zip
 
 # get latest version of site repository
-curl -L "https://github.com/${repository}/archive/main.zip" -o site.zip
-# unzip repo files
-unzip site.zip
-rm site.zip
+git clone --depth=1 "git@github.com:${repository}.git"
 
 # copy post data from mobile upload into site source directory
 find upload -maxdepth 1 -type f -exec mv -f {} $site_directory/src/posts \;
 
 # run deno to build & deploy 
 cd $site_directory
+
+git add -A
+git config user.name "publish script"
+git config user.email ""
+git commit -m "mobile publish"
+git push
+
 ~/.deno/bin/deno task deploy
